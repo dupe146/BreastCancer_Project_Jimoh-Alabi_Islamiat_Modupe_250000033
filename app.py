@@ -133,16 +133,21 @@ def predict():
         prediction = int(model.predict(input_scaled)[0])
         probabilities = model.predict_proba(input_scaled)[0]
         
+        # Get confidence (probability of the predicted class)
+        prob_malignant = float(probabilities[0])
+        prob_benign = float(probabilities[1])
+        confidence = prob_benign if prediction == 1 else prob_malignant
+        
         # Prepare response
         result = {
             'success': True,
             'prediction': metadata['target_names'][prediction],
-            'confidence': float(probabilities[prediction]),
+            'confidence': confidence,
             'probabilities': {
-                'malignant': float(probabilities[0]),
-                'benign': float(probabilities[1])
+                'malignant': prob_malignant,
+                'benign': prob_benign
             },
-            'interpretation': get_interpretation(prediction, probabilities[prediction])
+            'interpretation': get_interpretation(prediction, confidence)
         }
         
         # Log prediction
