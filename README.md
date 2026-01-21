@@ -27,6 +27,8 @@ This project implements a complete machine learning pipeline for breast cancer c
 3. **Web Application**: Flask-based interactive web interface
 4. **Deployment**: Production-ready deployment on Render.com
 
+live link: 
+
 ### Key Achievements
 - ✅ **Accuracy**: 97%+
 - ✅ **F1-Score**: 0.97
@@ -103,8 +105,8 @@ BreastCancer_Project_ModupeJimoh_MatricNo/
 ### Step 1: Clone Repository
 
 ```bash
-git clone https://github.com/yourusername/BreastCancer_Project_ModupeJimoh_MatricNo.git
-cd BreastCancer_Project_ModupeJimoh_MatricNo
+git clone BreastCancer_Project_Jimoh-Alabi_Islamiat_Modupe_250000033.git
+cd BreastCancer_Project_Jimoh-Alabi_Islamiat_Modupe_250000033
 ```
 
 ### Step 2: Create Virtual Environment (Recommended)
@@ -421,13 +423,4 @@ This is an educational project. Contributions for learning purposes are welcome:
 This project is created for educational purposes as part of academic coursework.
 
 ---
----
-
-## 🙏 Acknowledgments
-
-- **Dataset**: UCI Machine Learning Repository
-- **Framework**: Flask Development Team
-- **Institution**: [Your University/Institution]
-- **Course Instructor**: [Lecturer Name]
-
 ---

@@ -1,0 +1,12 @@
+Name:Jimoh_Alabi Islamiat Modupeoluwa 
+
+Reg Number:250000033
+
+Machine Learning Algorithm Used:Logistic Regression (from scikit-learn)
+
+Model persistence method used:
+Pickle (Python's built-in serialization module)
+
+Live URL of the hosted application:
+
+GitHub repository link:
