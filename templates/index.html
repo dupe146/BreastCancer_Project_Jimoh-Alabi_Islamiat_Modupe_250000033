@@ -19,28 +19,28 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 800px;
             margin: 0 auto;
             background: white;
             border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             overflow: hidden;
         }
 
         .header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 40px;
+            padding: 30px;
             text-align: center;
         }
 
         .header h1 {
-            font-size: 2.5em;
+            font-size: 28px;
             margin-bottom: 10px;
         }
 
         .header p {
-            font-size: 1.1em;
+            font-size: 14px;
             opacity: 0.9;
         }
 
@@ -48,87 +48,51 @@
             padding: 40px;
         }
 
-        .info-box {
-            background: #f8f9ff;
-            border-left: 4px solid #667eea;
-            padding: 20px;
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
             margin-bottom: 30px;
-            border-radius: 8px;
+            border-radius: 5px;
         }
 
-        .info-box h3 {
-            color: #667eea;
-            margin-bottom: 10px;
-        }
-
-        .tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 30px;
-            border-bottom: 2px solid #e0e0e0;
-        }
-
-        .tab {
-            padding: 15px 30px;
-            background: none;
-            border: none;
-            cursor: pointer;
+        .warning h3 {
+            color: #856404;
+            margin-bottom: 8px;
             font-size: 16px;
-            color: #666;
-            transition: all 0.3s;
-            border-bottom: 3px solid transparent;
         }
 
-        .tab.active {
-            color: #667eea;
-            border-bottom-color: #667eea;
-            font-weight: bold;
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-            animation: fadeIn 0.5s;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
+        .warning p {
+            color: #856404;
+            font-size: 14px;
+            line-height: 1.6;
         }
 
         .form-group {
-            display: flex;
-            flex-direction: column;
+            margin-bottom: 20px;
         }
 
-        .form-group label {
+        label {
+            display: block;
             font-weight: 600;
             margin-bottom: 8px;
             color: #333;
             font-size: 14px;
         }
 
-        .form-group input {
+        input[type="number"] {
+            width: 100%;
             padding: 12px;
             border: 2px solid #e0e0e0;
             border-radius: 8px;
             font-size: 14px;
-            transition: border-color 0.3s;
+            transition: all 0.3s;
         }
 
-        .form-group input:focus {
+        input[type="number"]:focus {
             outline: none;
             border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
         .button-group {
@@ -137,8 +101,9 @@
             margin-top: 30px;
         }
 
-        .btn {
-            padding: 15px 40px;
+        button {
+            flex: 1;
+            padding: 15px;
             border: none;
             border-radius: 8px;
             font-size: 16px;
@@ -147,122 +112,103 @@
             transition: all 0.3s;
         }
 
-        .btn-primary {
+        .btn-predict {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            flex: 1;
         }
 
-        .btn-primary:hover {
+        .btn-predict:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
         }
 
-        .btn-secondary {
-            background: #f0f0f0;
+        .btn-reset {
+            background: #f5f5f5;
             color: #666;
         }
 
-        .btn-secondary:hover {
+        .btn-reset:hover {
             background: #e0e0e0;
         }
 
-        .result-box {
-            display: none;
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .result {
             margin-top: 30px;
-            padding: 30px;
-            border-radius: 12px;
-            animation: slideIn 0.5s;
+            padding: 25px;
+            border-radius: 10px;
+            display: none;
         }
 
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .result.show {
+            display: block;
         }
 
-        .result-box.benign {
+        .result.benign {
             background: #d4edda;
             border: 2px solid #28a745;
         }
 
-        .result-box.malignant {
+        .result.malignant {
             background: #f8d7da;
             border: 2px solid #dc3545;
         }
 
-        .result-header {
-            font-size: 24px;
-            font-weight: bold;
+        .result h2 {
             margin-bottom: 15px;
+            font-size: 24px;
         }
 
-        .result-box.benign .result-header {
+        .result.benign h2 {
             color: #28a745;
         }
 
-        .result-box.malignant .result-header {
+        .result.malignant h2 {
             color: #dc3545;
         }
 
+        .result-details {
+            margin-top: 15px;
+        }
+
+        .result-details p {
+            margin: 8px 0;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
         .confidence-bar {
-            width: 100%;
-            height: 30px;
+            margin-top: 15px;
+            height: 10px;
             background: #e0e0e0;
-            border-radius: 15px;
+            border-radius: 5px;
             overflow: hidden;
-            margin: 20px 0;
         }
 
         .confidence-fill {
             height: 100%;
-            background: linear-gradient(90deg, #28a745 0%, #20c997 100%);
-            transition: width 1s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
+            transition: width 0.5s;
         }
 
-        .quick-test {
-            background: #fff3cd;
-            border: 2px solid #ffc107;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 30px;
+        .confidence-fill.benign {
+            background: #28a745;
         }
 
-        .quick-test h3 {
-            color: #856404;
-            margin-bottom: 15px;
-        }
-
-        .quick-test-buttons {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .quick-test-btn {
-            padding: 10px 20px;
-            background: #ffc107;
-            color: #856404;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-
-        .quick-test-btn:hover {
-            background: #e0a800;
-            transform: translateY(-2px);
+        .confidence-fill.malignant {
+            background: #dc3545;
         }
 
         .loading {
-            display: none;
             text-align: center;
             padding: 20px;
+            display: none;
+        }
+
+        .loading.show {
+            display: block;
         }
 
         .spinner {
@@ -272,7 +218,7 @@
             width: 40px;
             height: 40px;
             animation: spin 1s linear infinite;
-            margin: 0 auto;
+            margin: 0 auto 15px;
         }
 
         @keyframes spin {
@@ -280,45 +226,31 @@
             100% { transform: rotate(360deg); }
         }
 
-        .feature-info {
+        .footer {
+            background: #f5f5f5;
+            padding: 20px;
+            text-align: center;
             font-size: 12px;
             color: #666;
-            margin-top: 5px;
         }
 
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin: 30px 0;
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
         }
 
-        .stat-card {
-            background: #f8f9ff;
-            padding: 20px;
-            border-radius: 12px;
-            text-align: center;
-            border: 2px solid #e0e0ff;
+        .info-box p {
+            color: #1565c0;
+            font-size: 13px;
+            line-height: 1.6;
         }
 
-        .stat-value {
-            font-size: 32px;
-            font-weight: bold;
-            color: #667eea;
-        }
-
-        .stat-label {
-            color: #666;
-            margin-top: 8px;
-        }
-
-        @media (max-width: 768px) {
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .header h1 {
-                font-size: 1.8em;
+        @media (max-width: 600px) {
+            .content {
+                padding: 20px;
             }
             
             .button-group {
@@ -330,289 +262,171 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🔬 Breast Cancer Prediction System</h1>
-            <p>AI-Powered Medical Diagnosis Assistant</p>
+            <h1>🏥 Breast Cancer Prediction System</h1>
+            <p>Machine Learning Based Tumor Classification</p>
+            <p style="font-size: 12px; margin-top: 10px;">Student: Jimoh-Alabi Islamiat Modupe | Matric: 250000033</p>
         </div>
 
         <div class="content">
+            <div class="warning">
+                <h3>⚠️ Educational Purpose Only</h3>
+                <p>This system is a machine learning demonstration and should NOT be used for actual medical diagnosis. Always consult qualified healthcare professionals for medical decisions.</p>
+            </div>
+
             <div class="info-box">
-                <h3>ℹ️ About This System</h3>
-                <p>This machine learning model analyzes 30 tumor characteristics to predict whether a breast tumor is benign (non-cancerous) or malignant (cancerous). The model has been trained on the Wisconsin Breast Cancer Dataset and achieves high accuracy.</p>
-                <p style="margin-top: 10px;"><strong>⚠️ Important:</strong> This tool is for educational purposes only. Always consult qualified healthcare professionals for medical diagnoses.</p>
+                <p><strong>Model Information:</strong> Logistic Regression trained on Wisconsin Breast Cancer Dataset with 5 selected features.</p>
             </div>
 
-            <div class="tabs">
-                <button class="tab active" onclick="switchTab('manual')">Manual Input</button>
-                <button class="tab" onclick="switchTab('quick')">Quick Test</button>
-                <button class="tab" onclick="switchTab('about')">Model Info</button>
+            <form id="predictionForm">
+                <div class="form-group">
+                    <label for="radius_mean">Radius Mean (6.98 - 28.11)</label>
+                    <input type="number" id="radius_mean" step="0.01" min="0" required 
+                           placeholder="Enter radius mean value">
+                </div>
+
+                <div class="form-group">
+                    <label for="texture_mean">Texture Mean (9.71 - 39.28)</label>
+                    <input type="number" id="texture_mean" step="0.01" min="0" required 
+                           placeholder="Enter texture mean value">
+                </div>
+
+                <div class="form-group">
+                    <label for="perimeter_mean">Perimeter Mean (43.79 - 188.50)</label>
+                    <input type="number" id="perimeter_mean" step="0.01" min="0" required 
+                           placeholder="Enter perimeter mean value">
+                </div>
+
+                <div class="form-group">
+                    <label for="area_mean">Area Mean (143.5 - 2501.0)</label>
+                    <input type="number" id="area_mean" step="0.01" min="0" required 
+                           placeholder="Enter area mean value">
+                </div>
+
+                <div class="form-group">
+                    <label for="concavity_mean">Concavity Mean (0.0 - 0.43)</label>
+                    <input type="number" id="concavity_mean" step="0.0001" min="0" max="1" required 
+                           placeholder="Enter concavity mean value">
+                </div>
+
+                <div class="button-group">
+                    <button type="submit" class="btn-predict">🔬 Predict</button>
+                    <button type="button" class="btn-reset" onclick="resetForm()">🔄 Reset</button>
+                </div>
+            </form>
+
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Analyzing tumor features...</p>
             </div>
 
-            <!-- Manual Input Tab -->
-            <div id="manual-tab" class="tab-content active">
-                <div class="quick-test">
-                    <h3>🚀 Quick Start</h3>
-                    <p>Don't have data? Try these sample predictions:</p>
-                    <div class="quick-test-buttons">
-                        <button class="quick-test-btn" onclick="loadSample('benign')">Load Benign Sample</button>
-                        <button class="quick-test-btn" onclick="loadSample('malignant')">Load Malignant Sample</button>
-                        <button class="quick-test-btn" onclick="loadRandomSample()">Random Sample</button>
-                    </div>
-                </div>
-
-                <form id="prediction-form">
-                    <h3 style="margin-bottom: 20px;">Enter Tumor Measurements</h3>
-                    
-                    <div class="form-grid" id="feature-inputs"></div>
-
-                    <div class="button-group">
-                        <button type="submit" class="btn btn-primary">🔍 Predict</button>
-                        <button type="button" class="btn btn-secondary" onclick="resetForm()">🔄 Reset</button>
-                    </div>
-                </form>
-
-                <div class="loading" id="loading">
-                    <div class="spinner"></div>
-                    <p style="margin-top: 10px;">Analyzing tumor characteristics...</p>
-                </div>
-
-                <div class="result-box" id="result-box">
-                    <div class="result-header" id="result-header"></div>
-                    <p id="result-interpretation"></p>
+            <div class="result" id="result">
+                <h2 id="resultTitle"></h2>
+                <div class="result-details">
+                    <p id="resultInterpretation"></p>
+                    <p><strong>Confidence:</strong> <span id="resultConfidence"></span></p>
                     <div class="confidence-bar">
-                        <div class="confidence-fill" id="confidence-fill"></div>
+                        <div class="confidence-fill" id="confidenceFill"></div>
                     </div>
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-value" id="benign-prob">0%</div>
-                            <div class="stat-label">Benign Probability</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-value" id="malignant-prob">0%</div>
-                            <div class="stat-label">Malignant Probability</div>
-                        </div>
-                    </div>
+                    <p style="margin-top: 15px;"><strong>Probabilities:</strong></p>
+                    <p>• Malignant: <span id="probMalignant"></span></p>
+                    <p>• Benign: <span id="probBenign"></span></p>
                 </div>
             </div>
+        </div>
 
-            <!-- Quick Test Tab -->
-            <div id="quick-tab" class="tab-content">
-                <h3>Quick Test Examples</h3>
-                <p style="margin: 20px 0;">Use these pre-configured test cases to see how the model works:</p>
-                
-                <div class="stats-grid">
-                    <div class="stat-card" style="cursor: pointer;" onclick="runQuickTest('benign')">
-                        <div style="font-size: 48px;">✅</div>
-                        <div class="stat-label">Test Benign Case</div>
-                    </div>
-                    <div class="stat-card" style="cursor: pointer;" onclick="runQuickTest('malignant')">
-                        <div style="font-size: 48px;">⚠️</div>
-                        <div class="stat-label">Test Malignant Case</div>
-                    </div>
-                    <div class="stat-card" style="cursor: pointer;" onclick="runQuickTest('random')">
-                        <div style="font-size: 48px;">🎲</div>
-                        <div class="stat-label">Random Test</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- About Tab -->
-            <div id="about-tab" class="tab-content">
-                <h3>Model Information</h3>
-                <div class="stats-grid" id="model-stats">
-                    <div class="stat-card">
-                        <div class="stat-value">30</div>
-                        <div class="stat-label">Features</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value">569</div>
-                        <div class="stat-label">Training Samples</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="model-accuracy">-</div>
-                        <div class="stat-label">Accuracy</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value">ANN</div>
-                        <div class="stat-label">Algorithm</div>
-                    </div>
-                </div>
-
-                <div class="info-box" style="margin-top: 30px;">
-                    <h3>Features Used</h3>
-                    <p>The model analyzes 30 numerical features computed from digitized images of breast mass:</p>
-                    <ul style="margin-top: 15px; margin-left: 20px;">
-                        <li><strong>Mean values (10):</strong> radius, texture, perimeter, area, smoothness, compactness, concavity, concave points, symmetry, fractal dimension</li>
-                        <li><strong>Standard error (10):</strong> Standard error of the above measurements</li>
-                        <li><strong>Worst values (10):</strong> Worst/largest values of the above measurements</li>
-                    </ul>
-                </div>
-
-                <div class="info-box">
-                    <h3>Technology Stack</h3>
-                    <p><strong>Backend:</strong> Python, Flask, TensorFlow/Keras</p>
-                    <p><strong>Frontend:</strong> HTML, CSS, JavaScript</p>
-                    <p><strong>Dataset:</strong> Wisconsin Breast Cancer Dataset (UCI Repository)</p>
-                </div>
-            </div>
+        <div class="footer">
+            <p>© 2026 Breast Cancer Prediction System | Educational Project</p>
+            <p>Powered by Logistic Regression & Flask</p>
         </div>
     </div>
 
     <script>
-        // Sample data
-        const samples = {
-            benign: [13.54, 14.36, 87.46, 566.3, 0.09779, 0.08129, 0.06664, 0.04781, 0.1885, 0.05766, 0.2699, 0.7886, 2.058, 23.56, 0.008462, 0.0146, 0.02387, 0.01315, 0.0198, 0.0023, 15.11, 19.26, 99.7, 711.2, 0.144, 0.1773, 0.239, 0.1288, 0.2977, 0.07259],
-            malignant: [17.99, 10.38, 122.8, 1001, 0.1184, 0.2776, 0.3001, 0.1471, 0.2419, 0.07871, 1.095, 0.9053, 8.589, 153.4, 0.006399, 0.04904, 0.05373, 0.01587, 0.03003, 0.006193, 25.38, 17.33, 184.6, 2019, 0.1622, 0.6656, 0.7119, 0.2654, 0.4601, 0.1189]
-        };
+        const form = document.getElementById('predictionForm');
+        const loading = document.getElementById('loading');
+        const result = document.getElementById('result');
 
-        // Feature names
-        const featureNames = [
-            'radius_mean', 'texture_mean', 'perimeter_mean', 'area_mean', 'smoothness_mean',
-            'compactness_mean', 'concavity_mean', 'concave_points_mean', 'symmetry_mean', 'fractal_dimension_mean',
-            'radius_se', 'texture_se', 'perimeter_se', 'area_se', 'smoothness_se',
-            'compactness_se', 'concavity_se', 'concave_points_se', 'symmetry_se', 'fractal_dimension_se',
-            'radius_worst', 'texture_worst', 'perimeter_worst', 'area_worst', 'smoothness_worst',
-            'compactness_worst', 'concavity_worst', 'concave_points_worst', 'symmetry_worst', 'fractal_dimension_worst'
-        ];
-
-        // Initialize form
-        function initializeForm() {
-            const container = document.getElementById('feature-inputs');
-            featureNames.forEach((name, index) => {
-                const formGroup = document.createElement('div');
-                formGroup.className = 'form-group';
-                formGroup.innerHTML = `
-                    <label for="feature-${index}">${name.replace(/_/g, ' ').toUpperCase()}</label>
-                    <input type="number" id="feature-${index}" step="any" required placeholder="Enter value">
-                `;
-                container.appendChild(formGroup);
-            });
-        }
-
-        // Load sample data
-        function loadSample(type) {
-            const data = samples[type];
-            data.forEach((value, index) => {
-                document.getElementById(`feature-${index}`).value = value;
-            });
-        }
-
-        function loadRandomSample() {
-            const type = Math.random() > 0.5 ? 'benign' : 'malignant';
-            loadSample(type);
-        }
-
-        // Switch tabs
-        function switchTab(tabName) {
-            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            
-            event.target.classList.add('active');
-            document.getElementById(`${tabName}-tab`).classList.add('active');
-        }
-
-        // Reset form
-        function resetForm() {
-            document.getElementById('prediction-form').reset();
-            document.getElementById('result-box').style.display = 'none';
-        }
-
-        // Handle form submission
-        document.getElementById('prediction-form').addEventListener('submit', async function(e) {
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            // Collect features
-            const features = [];
-            for (let i = 0; i < 30; i++) {
-                features.push(parseFloat(document.getElementById(`feature-${i}`).value));
+            // Show loading
+            loading.classList.add('show');
+            result.classList.remove('show');
+            
+            // Get form values
+            const features = [
+                parseFloat(document.getElementById('radius_mean').value),
+                parseFloat(document.getElementById('texture_mean').value),
+                parseFloat(document.getElementById('perimeter_mean').value),
+                parseFloat(document.getElementById('area_mean').value),
+                parseFloat(document.getElementById('concavity_mean').value)
+            ];
+
+            // Validate inputs
+            if (features.some(isNaN)) {
+                alert('Please fill in all fields with valid numbers');
+                loading.classList.remove('show');
+                return;
             }
 
-            // Show loading
-            document.getElementById('loading').style.display = 'block';
-            document.getElementById('result-box').style.display = 'none';
-
             try {
-                // Make prediction
                 const response = await fetch('/predict', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({ features: features })
                 });
 
-                const result = await response.json();
-                
-                // Hide loading
-                document.getElementById('loading').style.display = 'none';
-
-                // Display result
-                displayResult(result);
-            } catch (error) {
-                document.getElementById('loading').style.display = 'none';
-                alert('Error making prediction: ' + error.message);
-            }
-        });
-
-        // Display result
-        function displayResult(result) {
-            const resultBox = document.getElementById('result-box');
-            const isBenign = result.prediction === 'benign';
-            
-            resultBox.className = 'result-box ' + result.prediction;
-            resultBox.style.display = 'block';
-            
-            document.getElementById('result-header').textContent = 
-                isBenign ? '✅ Benign (Non-Cancerous)' : '⚠️ Malignant (Cancerous)';
-            
-            document.getElementById('result-interpretation').textContent = result.interpretation;
-            
-            const confidence = isBenign ? result.probability_benign : result.probability_malignant;
-            const confidencePct = (confidence * 100).toFixed(1);
-            
-            const confidenceFill = document.getElementById('confidence-fill');
-            confidenceFill.style.width = confidencePct + '%';
-            confidenceFill.textContent = confidencePct + '% Confidence';
-            
-            document.getElementById('benign-prob').textContent = 
-                (result.probability_benign * 100).toFixed(1) + '%';
-            document.getElementById('malignant-prob').textContent = 
-                (result.probability_malignant * 100).toFixed(1) + '%';
-        }
-
-        // Quick test
-        function runQuickTest(type) {
-            switchTab('manual');
-            const tabs = document.querySelectorAll('.tab');
-            tabs[0].classList.add('active');
-            
-            if (type === 'random') {
-                loadRandomSample();
-            } else {
-                loadSample(type);
-            }
-            
-            setTimeout(() => {
-                document.getElementById('prediction-form').requestSubmit();
-            }, 500);
-        }
-
-        // Load model info
-        async function loadModelInfo() {
-            try {
-                const response = await fetch('/model_info');
                 const data = await response.json();
-                document.getElementById('model-accuracy').textContent = 
-                    (data.accuracy * 100).toFixed(1) + '%';
+                
+                loading.classList.remove('show');
+
+                if (data.success) {
+                    displayResult(data);
+                } else {
+                    alert('Error: ' + (data.error || 'Unknown error occurred'));
+                }
             } catch (error) {
-                console.error('Error loading model info:', error);
+                loading.classList.remove('show');
+                alert('Error connecting to server: ' + error.message);
             }
+        });
+
+        function displayResult(data) {
+            const resultDiv = document.getElementById('result');
+            const prediction = data.prediction.toLowerCase();
+            
+            // Set result class
+            resultDiv.className = 'result show ' + prediction;
+            
+            // Set title
+            document.getElementById('resultTitle').textContent = 
+                prediction === 'benign' ? '✅ Benign (Non-cancerous)' : '⚠️ Malignant (Cancerous)';
+            
+            // Set interpretation
+            document.getElementById('resultInterpretation').textContent = data.interpretation;
+            
+            // Set confidence
+            const confidencePercent = (data.confidence * 100).toFixed(2);
+            document.getElementById('resultConfidence').textContent = confidencePercent + '%';
+            
+            // Set confidence bar
+            const confidenceFill = document.getElementById('confidenceFill');
+            confidenceFill.className = 'confidence-fill ' + prediction;
+            confidenceFill.style.width = confidencePercent + '%';
+            
+            // Set probabilities
+            document.getElementById('probMalignant').textContent = 
+                (data.probabilities.malignant * 100).toFixed(2) + '%';
+            document.getElementById('probBenign').textContent = 
+                (data.probabilities.benign * 100).toFixed(2) + '%';
         }
 
-        // Initialize on page load
-        window.addEventListener('load', function() {
-            initializeForm();
-            loadModelInfo();
-        });
+        function resetForm() {
+            form.reset();
+            result.classList.remove('show');
+            loading.classList.remove('show');
+        }
     </script>
 </body>
 </html>
