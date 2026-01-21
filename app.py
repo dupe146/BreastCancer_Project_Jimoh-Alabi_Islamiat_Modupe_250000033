@@ -3,7 +3,7 @@ Breast Cancer Prediction Web Application
 Student: Jimoh-Alabi Islamiat Modupe
 Matric No: 250000033
 
-A Flask-based web application for breast cancer classification
+A Streamlit-based web application for breast cancer classification
 using machine learning (Logistic Regression).
 
 Algorithm: Logistic Regression
@@ -11,15 +11,60 @@ Model Persistence: Pickle
 Dataset: Wisconsin Breast Cancer Dataset (UCI Repository)
 """
 
-from flask import Flask, render_template, request, jsonify
-from flask_cors import CORS
+import streamlit as st
 import numpy as np
 import pickle
 import json
 import os
 
-app = Flask(__name__)
-CORS(app)
+# Page configuration
+st.set_page_config(
+    page_title="Breast Cancer Prediction System",
+    page_icon="🏥",
+    layout="centered"
+)
+
+# Custom CSS
+st.markdown("""
+<style>
+    .main-header {
+        text-align: center;
+        padding: 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 10px;
+        margin-bottom: 30px;
+    }
+    .warning-box {
+        background-color: #fff3cd;
+        border-left: 5px solid #ffc107;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 5px;
+    }
+    .result-benign {
+        background-color: #d4edda;
+        border-left: 5px solid #28a745;
+        padding: 20px;
+        border-radius: 10px;
+        margin-top: 20px;
+    }
+    .result-malignant {
+        background-color: #f8d7da;
+        border-left: 5px solid #dc3545;
+        padding: 20px;
+        border-radius: 10px;
+        margin-top: 20px;
+    }
+    .info-box {
+        background-color: #e3f2fd;
+        border-left: 5px solid #2196f3;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 5px;
+    }
+</style>
+""", unsafe_allow_html=True)
 
 # Configuration
 MODEL_DIR = 'model'
@@ -27,262 +72,224 @@ MODEL_PATH = os.path.join(MODEL_DIR, 'breast_cancer_model.pkl')
 SCALER_PATH = os.path.join(MODEL_DIR, 'scaler.pkl')
 METADATA_PATH = os.path.join(MODEL_DIR, 'model_metadata.json')
 
-# Define the 5 features you selected for your model
-# IMPORTANT: These must match the features you used in model_building.ipynb
-SELECTED_FEATURES = [
-    'radius_mean',
-    'texture_mean',
-    'perimeter_mean',
-    'area_mean',
-    'concavity_mean'
-]
-
-print("="*80)
-print("BREAST CANCER PREDICTION WEB APPLICATION")
-print("="*80)
-
 # Load model and resources
-try:
-    print("\n[1] Loading trained model...")
-    with open(MODEL_PATH, 'rb') as f:
-        model = pickle.load(f)
-    print("    ✅ Model loaded successfully!")
-    
-    print("[2] Loading feature scaler...")
-    with open(SCALER_PATH, 'rb') as f:
-        scaler = pickle.load(f)
-    print("    ✅ Scaler loaded successfully!")
-    
-    print("[3] Loading metadata...")
-    if os.path.exists(METADATA_PATH):
-        with open(METADATA_PATH, 'r') as f:
-            metadata = json.load(f)
-        print("    ✅ Metadata loaded successfully!")
-    else:
-        # Create default metadata if file doesn't exist
-        metadata = {
-            'model_type': 'Logistic Regression',
-            'feature_names': SELECTED_FEATURES,
-            'target_names': ['malignant', 'benign'],
-            'accuracy': 0.95,
-            'f1_score': 0.95
-        }
-        print("    ⚠️  Metadata file not found, using defaults")
-    
-    print("\n" + "="*80)
-    print("✅ APPLICATION READY")
-    print("="*80)
-    print(f"\nModel Type: {metadata['model_type']}")
-    print(f"Selected Features: {', '.join(SELECTED_FEATURES)}")
-    print(f"Number of Features: {len(SELECTED_FEATURES)}")
-    print("="*80)
-    
-except FileNotFoundError as e:
-    print(f"\n❌ ERROR: Required file not found!")
-    print(f"   {e}")
-    print("\n   Please ensure all model files are in the 'model/' directory:")
-    print("   - breast_cancer_model.pkl")
-    print("   - scaler.pkl")
-    exit(1)
-except Exception as e:
-    print(f"\n❌ ERROR loading resources: {e}")
-    import traceback
-    traceback.print_exc()
-    exit(1)
-
-@app.route('/')
-def home():
-    """Render the home page"""
-    return render_template('index.html', 
-                         feature_names=SELECTED_FEATURES,
-                         model_accuracy=metadata.get('accuracy', 0.95),
-                         model_type=metadata.get('model_type', 'Logistic Regression'))
-
-@app.route('/predict', methods=['POST'])
-def predict():
-    """
-    Handle prediction requests
-    
-    Expected JSON format:
-    {
-        "features": [array of 5 float values]
-    }
-    
-    Returns:
-    {
-        "success": true/false,
-        "prediction": "benign" or "malignant",
-        "confidence": float (0-1),
-        "probabilities": {
-            "benign": float,
-            "malignant": float
-        }
-    }
-    """
+@st.cache_resource
+def load_model_resources():
+    """Load model, scaler, and metadata"""
     try:
-        # Get JSON data from request
-        data = request.get_json()
+        # Load model
+        with open(MODEL_PATH, 'rb') as f:
+            model = pickle.load(f)
         
-        if not data:
-            return jsonify({
-                'success': False,
-                'error': 'No data received'
-            }), 400
+        # Load scaler
+        with open(SCALER_PATH, 'rb') as f:
+            scaler = pickle.load(f)
         
-        features = data.get('features', [])
+        # Load metadata
+        if os.path.exists(METADATA_PATH):
+            with open(METADATA_PATH, 'r') as f:
+                metadata = json.load(f)
+        else:
+            metadata = {
+                'model_type': 'Logistic Regression',
+                'feature_names': ['radius_mean', 'texture_mean', 'perimeter_mean', 
+                                'area_mean', 'concavity_mean'],
+                'target_names': ['malignant', 'benign'],
+                'accuracy': 0.95
+            }
         
-        # Validate input
-        if not features:
-            return jsonify({
-                'success': False,
-                'error': 'No features provided'
-            }), 400
-        
-        expected_features = len(SELECTED_FEATURES)
-        if len(features) != expected_features:
-            return jsonify({
-                'success': False,
-                'error': f'Expected {expected_features} features, received {len(features)}'
-            }), 400
-        
-        # Check for NaN or invalid values
-        try:
-            features_float = [float(f) for f in features]
-            if any(np.isnan(features_float)) or any(np.isinf(features_float)):
-                return jsonify({
-                    'success': False,
-                    'error': 'Invalid feature values (NaN or Inf detected)'
-                }), 400
-        except (ValueError, TypeError) as e:
-            return jsonify({
-                'success': False,
-                'error': f'Invalid feature values: {str(e)}'
-            }), 400
-        
-        # Convert to numpy array and reshape
-        input_data = np.array(features_float, dtype=np.float64).reshape(1, -1)
-        
-        # Scale features
-        input_scaled = scaler.transform(input_data)
-        
-        # Make prediction
-        prediction = int(model.predict(input_scaled)[0])
-        probabilities = model.predict_proba(input_scaled)[0]
-        
-        # FIXED: Correct probability mapping
-        # For sklearn LogisticRegression with binary classification:
-        # probabilities[0] = probability of class 0 (malignant)
-        # probabilities[1] = probability of class 1 (benign)
-        prob_malignant = float(probabilities[0])
-        prob_benign = float(probabilities[1])
-        
-        # Get confidence (probability of the predicted class)
-        confidence = prob_benign if prediction == 1 else prob_malignant
-        
-        # Prepare response
-        result = {
-            'success': True,
-            'prediction': metadata['target_names'][prediction],
-            'confidence': confidence,
-            'probabilities': {
-                'malignant': prob_malignant,
-                'benign': prob_benign
-            },
-            'interpretation': get_interpretation(prediction, confidence)
-        }
-        
-        # Log prediction
-        print(f"\n✅ Prediction: {result['prediction'].upper()} "
-              f"(confidence: {result['confidence']*100:.2f}%)")
-        print(f"   Probabilities - Malignant: {prob_malignant:.4f}, Benign: {prob_benign:.4f}")
-        
-        return jsonify(result)
+        return model, scaler, metadata
     
-    except ValueError as e:
-        return jsonify({
-            'success': False,
-            'error': f'Invalid input data: {str(e)}'
-        }), 400
-    
+    except FileNotFoundError as e:
+        st.error(f"❌ Error: Required model files not found in '{MODEL_DIR}/' directory")
+        st.error(f"Please ensure the following files exist:")
+        st.error("- breast_cancer_model.pkl")
+        st.error("- scaler.pkl")
+        st.error("- model_metadata.json (optional)")
+        st.stop()
     except Exception as e:
-        print(f"\n❌ Prediction error: {e}")
-        import traceback
-        traceback.print_exc()
-        return jsonify({
-            'success': False,
-            'error': 'An error occurred during prediction'
-        }), 500
+        st.error(f"❌ Error loading model: {str(e)}")
+        st.stop()
 
-def get_interpretation(prediction, confidence):
-    """
-    Generate human-readable interpretation of prediction
+# Load resources
+model, scaler, metadata = load_model_resources()
+
+# Header
+st.markdown("""
+<div class="main-header">
+    <h1>🏥 Breast Cancer Prediction System</h1>
+    <p>Machine Learning Based Tumor Classification</p>
+    <p style="font-size: 12px; margin-top: 10px;">
+        Student: Jimoh-Alabi Islamiat Modupe | Matric: 250000033
+    </p>
+</div>
+""", unsafe_allow_html=True)
+
+# Warning message
+st.markdown("""
+<div class="warning-box">
+    <h3>⚠️ Educational Purpose Only</h3>
+    <p>This system is a machine learning demonstration and should NOT be used for actual 
+    medical diagnosis. Always consult qualified healthcare professionals for medical decisions.</p>
+</div>
+""", unsafe_allow_html=True)
+
+# Model information
+st.markdown(f"""
+<div class="info-box">
+    <p><strong>Model Information:</strong> {metadata['model_type']} trained on Wisconsin 
+    Breast Cancer Dataset with {len(metadata['feature_names'])} selected features.</p>
+    <p><strong>Model Accuracy:</strong> {metadata.get('accuracy', 0.95)*100:.2f}%</p>
+</div>
+""", unsafe_allow_html=True)
+
+# Input form
+st.subheader("📊 Enter Tumor Feature Values")
+
+col1, col2 = st.columns(2)
+
+with col1:
+    radius_mean = st.number_input(
+        "Radius Mean",
+        min_value=0.0,
+        max_value=50.0,
+        value=14.0,
+        step=0.01,
+        help="Typical range: 6.98 - 28.11"
+    )
     
-    Args:
-        prediction (int): 0 for malignant, 1 for benign
-        confidence (float): Probability of predicted class
+    texture_mean = st.number_input(
+        "Texture Mean",
+        min_value=0.0,
+        max_value=50.0,
+        value=20.0,
+        step=0.01,
+        help="Typical range: 9.71 - 39.28"
+    )
     
-    Returns:
-        str: Interpretation message
-    """
-    if prediction == 1:  # Benign
-        if confidence > 0.9:
-            return "High confidence: The tumor is likely BENIGN (non-cancerous)."
-        elif confidence > 0.75:
-            return "Moderate confidence: The tumor appears to be BENIGN."
-        else:
-            return "Low confidence: Further medical evaluation is strongly recommended."
-    else:  # Malignant
-        if confidence > 0.9:
-            return "High confidence: The tumor is likely MALIGNANT (cancerous). Immediate medical consultation is advised."
-        elif confidence > 0.75:
-            return "Moderate confidence: The tumor appears to be MALIGNANT. Please consult a healthcare professional."
-        else:
-            return "Low confidence: Results are inconclusive. Professional medical evaluation is necessary."
+    perimeter_mean = st.number_input(
+        "Perimeter Mean",
+        min_value=0.0,
+        max_value=200.0,
+        value=90.0,
+        step=0.01,
+        help="Typical range: 43.79 - 188.50"
+    )
 
-@app.route('/model_info')
-def model_info():
-    """Return model metadata"""
-    return jsonify(metadata)
-
-@app.route('/health')
-def health():
-    """Health check endpoint for deployment monitoring"""
-    return jsonify({
-        'status': 'healthy',
-        'model_loaded': True,
-        'scaler_loaded': True,
-        'features': SELECTED_FEATURES
-    })
-
-@app.errorhandler(404)
-def not_found(error):
-    """Handle 404 errors"""
-    return jsonify({
-        'success': False,
-        'error': 'Endpoint not found'
-    }), 404
-
-@app.errorhandler(500)
-def internal_error(error):
-    """Handle 500 errors"""
-    return jsonify({
-        'success': False,
-        'error': 'Internal server error'
-    }), 500
-
-if __name__ == '__main__':
-    # Get port from environment variable (for deployment) or use 8080
-    port = int(os.environ.get('PORT', 8080))
+with col2:
+    area_mean = st.number_input(
+        "Area Mean",
+        min_value=0.0,
+        max_value=3000.0,
+        value=600.0,
+        step=1.0,
+        help="Typical range: 143.5 - 2501.0"
+    )
     
-    print("\n" + "="*80)
-    print("🚀 STARTING WEB APPLICATION")
-    print("="*80)
-    print(f"\n📱 Local URL: http://127.0.0.1:{port}")
-    print("\n⚠️  EDUCATIONAL PURPOSE ONLY")
-    print("   This application is for educational demonstration.")
-    print("   NOT intended for actual medical diagnosis.")
-    print("   Always consult qualified healthcare professionals.")
-    print("\n" + "="*80 + "\n")
+    concavity_mean = st.number_input(
+        "Concavity Mean",
+        min_value=0.0,
+        max_value=1.0,
+        value=0.1,
+        step=0.001,
+        help="Typical range: 0.0 - 0.43",
+        format="%.4f"
+    )
+
+# Prediction button
+st.markdown("<br>", unsafe_allow_html=True)
+col1, col2, col3 = st.columns([1, 2, 1])
+
+with col2:
+    predict_button = st.button("🔬 Predict", use_container_width=True, type="primary")
+
+# Make prediction
+if predict_button:
+    # Collect features
+    features = np.array([
+        radius_mean,
+        texture_mean,
+        perimeter_mean,
+        area_mean,
+        concavity_mean
+    ]).reshape(1, -1)
     
-    # Run the application
-    app.run(host='0.0.0.0', port=port, debug=False)
+    # Validate inputs
+    if np.any(np.isnan(features)) or np.any(np.isinf(features)):
+        st.error("❌ Invalid input values detected. Please check your inputs.")
+    else:
+        with st.spinner("Analyzing tumor features..."):
+            try:
+                # Scale features
+                features_scaled = scaler.transform(features)
+                
+                # Make prediction
+                prediction = int(model.predict(features_scaled)[0])
+                probabilities = model.predict_proba(features_scaled)[0]
+                
+                # Get probabilities
+                prob_malignant = float(probabilities[0])
+                prob_benign = float(probabilities[1])
+                
+                # Get confidence
+                confidence = prob_benign if prediction == 1 else prob_malignant
+                
+                # Display result
+                if prediction == 1:  # Benign
+                    st.markdown("""
+                    <div class="result-benign">
+                        <h2 style="color: #28a745;">✅ Prediction: BENIGN (Non-cancerous)</h2>
+                    </div>
+                    """, unsafe_allow_html=True)
+                    
+                    if confidence > 0.9:
+                        interpretation = "High confidence: The tumor is likely BENIGN (non-cancerous)."
+                    elif confidence > 0.75:
+                        interpretation = "Moderate confidence: The tumor appears to be BENIGN."
+                    else:
+                        interpretation = "Low confidence: Further medical evaluation is strongly recommended."
+                else:  # Malignant
+                    st.markdown("""
+                    <div class="result-malignant">
+                        <h2 style="color: #dc3545;">⚠️ Prediction: MALIGNANT (Cancerous)</h2>
+                    </div>
+                    """, unsafe_allow_html=True)
+                    
+                    if confidence > 0.9:
+                        interpretation = "High confidence: The tumor is likely MALIGNANT. Immediate medical consultation is advised."
+                    elif confidence > 0.75:
+                        interpretation = "Moderate confidence: The tumor appears to be MALIGNANT. Please consult a healthcare professional."
+                    else:
+                        interpretation = "Low confidence: Results are inconclusive. Professional medical evaluation is necessary."
+                
+                # Show details
+                st.markdown("### 📊 Prediction Details")
+                st.write(f"**Interpretation:** {interpretation}")
+                st.write(f"**Confidence:** {confidence*100:.2f}%")
+                
+                # Progress bar for confidence
+                st.progress(confidence)
+                
+                # Probabilities
+                st.markdown("### 📈 Class Probabilities")
+                col1, col2 = st.columns(2)
+                with col1:
+                    st.metric("Malignant", f"{prob_malignant*100:.2f}%")
+                with col2:
+                    st.metric("Benign", f"{prob_benign*100:.2f}%")
+                
+                # Disclaimer
+                st.warning("⚠️ Remember: This is an educational tool. Always consult medical professionals for diagnosis.")
+                
+            except Exception as e:
+                st.error(f"❌ Error during prediction: {str(e)}")
+                st.error("Please check your input values and try again.")
+
+# Footer
+st.markdown("---")
+st.markdown("""
+<div style="text-align: center; color: #666; font-size: 12px;">
+    <p>© 2026 Breast Cancer Prediction System | Educational Project</p>
+    <p>Powered by Logistic Regression & Streamlit</p>
+</div>
+""", unsafe_allow_html=True)
