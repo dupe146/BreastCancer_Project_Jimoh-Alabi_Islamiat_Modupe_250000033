@@ -5,8 +5,8 @@ Reg Number:250000033
 Machine Learning Algorithm Used:Logistic Regression (from scikit-learn)
 
 Model persistence method used:
-Pickle (Python's built-in serialization module)
+Pickle 
 
-Live URL of the hosted application:
+Live URL of the hosted application:https://breastcancerprojectjimoh-alabiislamiatmodupe250000033-rscb8pl8.streamlit.app/
 
-GitHub repository link:BreastCancer_Project_Jimoh-Alabi_Islamiat_Modupe_250000033
+GitHub repository link:https://github.com/dupe146/BreastCancer_Project_Jimoh-Alabi_Islamiat_Modupe_250000033
